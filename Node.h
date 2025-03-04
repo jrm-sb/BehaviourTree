@@ -25,7 +25,7 @@ namespace BehaviourTree
 		Node(const Node& other)
 			: m_Name(other.m_Name), m_Id(other.m_Id), m_Index(other.m_Index), m_Result(other.m_Result) {}
 
-		virtual ~Node() {}
+		virtual ~Node() = default;
 
 		virtual void AddChild(const Node& node) {}
 

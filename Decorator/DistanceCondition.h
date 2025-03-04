@@ -17,6 +17,7 @@ namespace BehaviourTree
     public:
         DistanceCondition(float valueToCheck, const Blackboard& blackboard, Blackboard::Key key, Operator op)
             : Decorator("DistanceCondition"), m_Value(valueToCheck), m_Blackboard(blackboard), m_Key(key), m_Operator(op) {}
+        virtual ~DistanceCondition() = default;
 
         virtual bool Evaluate() override;
 
