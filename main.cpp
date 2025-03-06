@@ -3,7 +3,9 @@
 #include <thread>
 
 #include "Blackboard/Blackboard.h"
+#include "Composite/Selector.h"
 #include "Decorator/DistanceCondition.h"
+#include "Task/FailTask.h"
 #include "Task/WaitTask.h"
 #include "Node.h"
 #include "TestRunner.h"
@@ -95,16 +97,16 @@ TEST(CheckDistanceCondition)
 
 TEST(WaitTask)
 {
-    static constexpr float timeToWait = 1.0f;
+    constexpr float timeToWait = 1.0f;
     BehaviourTree::WaitTask waitTask{ timeToWait };
 
     EXPECT(waitTask.GetName() == "WaitTask");
     waitTask.OnEnter();
     EXPECT(waitTask.Run() == BehaviourTree::Result::RUNNING);
 
-    std::thread secondThread([time = timeToWait]()
+    std::thread secondThread([timeToWait]()
         {
-            std::this_thread::sleep_for(std::chrono::duration<float>(time));
+            std::this_thread::sleep_for(std::chrono::duration<float>(timeToWait));
         });
     secondThread.join();
     EXPECT(waitTask.Run() == BehaviourTree::Result::SUCCESS);
@@ -147,7 +149,40 @@ TEST(AddDecoratorsToTaskAndEvaluate)
 
 TEST(SelectorNode)
 {
+    BehaviourTree::Selector selector{};
+    EXPECT(selector.GetName() == "SelectorNode");
 
+    selector.AddChild(std::make_unique<BehaviourTree::FailTask>());
+    selector.AddChild(std::make_unique<BehaviourTree::FailTask>());
+
+    EXPECT(selector.GetChildren().size() == 2);
+    EXPECT(selector.Evaluate() == true);
+    EXPECT(selector.Run() == BehaviourTree::Result::FAILURE);
+
+    BehaviourTree::Blackboard blackboard{};
+    static constexpr BehaviourTree::Blackboard::Key key1 = 1;
+    blackboard.SetValue(key1, 10.f);
+
+    static constexpr float currentDistanceToTarget = 15.0f;
+
+    BehaviourTree::DistanceCondition condition1{ currentDistanceToTarget, blackboard, key1, BehaviourTree::Operator::GREATER_EQUAL };
+
+    constexpr float timeToWait = 1.0f;
+    BehaviourTree::WaitTask waitTask{ timeToWait };
+
+    selector.AddChild(std::make_unique<BehaviourTree::WaitTask>(waitTask));
+    EXPECT(selector.GetChildren().size() == 3);
+
+    selector.OnEnter();
+    EXPECT(selector.Run() == BehaviourTree::Result::RUNNING);
+
+    std::thread secondThread([timeToWait]()
+        {
+            std::this_thread::sleep_for(std::chrono::duration<float>(timeToWait));
+        });
+    secondThread.join();
+
+    EXPECT(selector.Run() == BehaviourTree::Result::SUCCESS);
 }
 
 int main()

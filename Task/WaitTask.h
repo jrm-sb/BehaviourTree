@@ -9,6 +9,7 @@ namespace BehaviourTree
     public:
         WaitTask() : Task("WaitTask"), m_WaitTime(0.1f) {}
         WaitTask(float time) : Task("WaitTask"), m_WaitTime(time) {}
+        WaitTask(const WaitTask& other) : m_WaitTime(other.m_WaitTime) {}
         virtual ~WaitTask() = default;
 
         virtual void OnEnter() override;

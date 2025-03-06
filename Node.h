@@ -39,7 +39,7 @@ namespace BehaviourTree
 		virtual void OnEnter() { m_Result = Result::RUNNING; }
 		virtual void OnExit() {}
 
-	private:
+	protected:
 		std::string m_Name;
 		unsigned int m_Id;
 		unsigned int m_Index;

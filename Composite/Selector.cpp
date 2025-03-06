@@ -17,14 +17,15 @@ namespace BehaviourTree
 
     Result Selector::Run()
     {
-        for (const std::unique_ptr<Node>& child : m_Children)
+        for (const std::unique_ptr<Task>& child : m_Children)
         {
-            if (child->Run() == Result::SUCCESS)
+            m_Result = child->Run();
+            if (m_Result == Result::SUCCESS)
             {
                 return Result::SUCCESS;
             }
         }
 
-        return Result::FAILURE;
+        return m_Result;
     }
 }

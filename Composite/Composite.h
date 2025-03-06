@@ -4,6 +4,7 @@
 
 #include "Decorator/Decorator.h"
 #include "Node.h"
+#include "Task/Task.h"
 
 namespace BehaviourTree
 {
@@ -16,17 +17,22 @@ namespace BehaviourTree
         virtual ~Composite() = default;
 
         void AddDecorator(std::unique_ptr<Decorator> decorator);
-        void AddChild(std::unique_ptr<Node> node);
+        void RemoveDecorator(std::unique_ptr<Decorator> decorator);
+        void RemoveAllDecorators();
 
-        const std::vector<std::unique_ptr<Decorator>>& GetDecorators() const { return m_Decorators; }
-        const std::vector<std::unique_ptr<Node>>& GetChildren() const { return m_Children; }
+        void AddChild(std::unique_ptr<Task> task);
+        void RemoveChild(std::unique_ptr<Task> task);
+        void RemoveAllChildren();
+
+        const std::vector<std::unique_ptr<Decorator>>& GetDecorators() const { return std::move(m_Decorators); }
+        const std::vector<std::unique_ptr<Task>>& GetChildren() const { return std::move(m_Children); }
 
         virtual bool Evaluate() override { return true; }
         virtual Result Run() override = 0;
         
     protected:
         std::vector<std::unique_ptr<Decorator>> m_Decorators;
-        std::vector<std::unique_ptr<Node>> m_Children;
+        std::vector<std::unique_ptr<Task>> m_Children;
     };
 }
 

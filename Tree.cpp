@@ -20,7 +20,7 @@ namespace BehaviourTree
             if (result == Result::SUCCESS)
             {
                 m_Nodes[currentIndex]->OnExit();
-                ++currentIndex;
+                currentIndex = 0;
             }
             else if (result == Result::FAILURE)
             {
