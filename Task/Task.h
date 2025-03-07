@@ -2,19 +2,16 @@
 #include <memory>
 #include <vector>
 #include "Decorator.h"
-#include "Node.h"
+#include "Collection.h"
 
 namespace BehaviourTree
 {
-    class Task : public Node
+    class Task : public Collection
     {
     public:
-        Task() : Node("TaskNode") {}
-        Task(const std::string& name) : Node(name) {}
+        Task() : Collection("TaskNode") {}
+        Task(const std::string& name) : Collection(name) {}
         virtual ~Task() = default;
-
-        void AddDecorator(std::unique_ptr<Decorator> decorator);
-        const std::vector<std::unique_ptr<Decorator>>& GetDecorators() const { return std::move(m_Decorators); }
 
         virtual bool Evaluate() override;
         virtual Result Run() override = 0;
@@ -22,8 +19,6 @@ namespace BehaviourTree
     protected:
         virtual void OnEnter() override {}
         virtual void OnExit() override {}
-
-        std::vector<std::unique_ptr<Decorator>> m_Decorators;
     };
 }
 
