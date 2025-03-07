@@ -4,8 +4,10 @@
 
 #include "Blackboard/Blackboard.h"
 #include "Composite/Selector.h"
+#include "Composite/Sequence.h"
 #include "Decorator/DistanceCondition.h"
 #include "Task/FailTask.h"
+#include "Task/SuccessTask.h"
 #include "Task/WaitTask.h"
 #include "Node.h"
 #include "TestRunner.h"
@@ -112,6 +114,22 @@ TEST(WaitTask)
     EXPECT(waitTask.Run() == BehaviourTree::Result::SUCCESS);
 }
 
+TEST(FailTask)
+{
+    BehaviourTree::FailTask failTask{};
+
+    EXPECT(failTask.GetName() == "FailTask");
+    EXPECT(failTask.Run() == BehaviourTree::Result::FAILURE);
+}
+
+TEST(SuccessTask)
+{
+    BehaviourTree::SuccessTask successTask{};
+
+    EXPECT(successTask.GetName() == "SuccessTask");
+    EXPECT(successTask.Run() == BehaviourTree::Result::SUCCESS);
+}
+
 TEST(AddDecoratorsToTaskAndEvaluate)
 {
     BehaviourTree::Blackboard blackboard{};
@@ -147,7 +165,7 @@ TEST(AddDecoratorsToTaskAndEvaluate)
     EXPECT(waitTask.Evaluate() == false);
 }
 
-TEST(SelectorNode)
+TEST(SelectorNodeWithFailTasks)
 {
     BehaviourTree::Selector selector{};
     EXPECT(selector.GetName() == "SelectorNode");
@@ -157,32 +175,59 @@ TEST(SelectorNode)
 
     EXPECT(selector.GetChildren().size() == 2);
     EXPECT(selector.Evaluate() == true);
+    selector.OnEnter();
     EXPECT(selector.Run() == BehaviourTree::Result::FAILURE);
+}
 
-    BehaviourTree::Blackboard blackboard{};
-    static constexpr BehaviourTree::Blackboard::Key key1 = 1;
-    blackboard.SetValue(key1, 10.f);
+TEST(SelectorNodeWithFailTasksAndSuccessTask)
+{
+    BehaviourTree::Selector selector{};
+    EXPECT(selector.GetName() == "SelectorNode");
 
-    static constexpr float currentDistanceToTarget = 15.0f;
-
-    BehaviourTree::DistanceCondition condition1{ currentDistanceToTarget, blackboard, key1, BehaviourTree::Operator::GREATER_EQUAL };
-
-    constexpr float timeToWait = 1.0f;
-    BehaviourTree::WaitTask waitTask{ timeToWait };
-
-    selector.AddChild(std::make_unique<BehaviourTree::WaitTask>(waitTask));
+    selector.AddChild(std::make_unique<BehaviourTree::FailTask>());
+    selector.AddChild(std::make_unique<BehaviourTree::FailTask>());
+    selector.AddChild(std::make_unique<BehaviourTree::SuccessTask>());
     EXPECT(selector.GetChildren().size() == 3);
 
     selector.OnEnter();
-    EXPECT(selector.Run() == BehaviourTree::Result::RUNNING);
-
-    std::thread secondThread([timeToWait]()
-        {
-            std::this_thread::sleep_for(std::chrono::duration<float>(timeToWait));
-        });
-    secondThread.join();
-
     EXPECT(selector.Run() == BehaviourTree::Result::SUCCESS);
+}
+
+TEST(SequenceNodeWithFailTask)
+{
+    BehaviourTree::Sequence sequence{};
+    EXPECT(sequence.GetName() == "SequenceNode");
+
+    sequence.AddChild(std::make_unique<BehaviourTree::FailTask>());
+    EXPECT(sequence.GetChildren().size() == 1);
+
+    sequence.OnEnter();
+    EXPECT(sequence.Run() == BehaviourTree::Result::FAILURE);
+}
+
+TEST(SequenceNodeWithSuccessTask)
+{
+    BehaviourTree::Sequence sequence{};
+
+    sequence.AddChild(std::make_unique<BehaviourTree::SuccessTask>());
+
+    EXPECT(sequence.GetChildren().size() == 1);
+
+    sequence.OnEnter();
+    EXPECT(sequence.Run() == BehaviourTree::Result::SUCCESS);
+}
+
+TEST(SequenceNodeWithSuccessTaskAndFailTask)
+{
+    BehaviourTree::Sequence sequence{};
+
+    sequence.AddChild(std::make_unique<BehaviourTree::SuccessTask>());
+    sequence.AddChild(std::make_unique<BehaviourTree::FailTask>());
+
+    EXPECT(sequence.GetChildren().size() == 2);
+
+    sequence.OnEnter();
+    EXPECT(sequence.Run() == BehaviourTree::Result::FAILURE);
 }
 
 int main()

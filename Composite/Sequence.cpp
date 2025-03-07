@@ -1,20 +1,20 @@
-#include "Selector.h"
+#include "Sequence.h"
 
 namespace BehaviourTree
 {
-    Result Selector::Run()
+    Result BehaviourTree::Sequence::Run()
     {
         int i = 0;
         Result result = m_Result;
         while (i < m_Children.size())
         {
             result = m_Children[i]->Run();
-            if (result == Result::SUCCESS)
+            if (result == Result::FAILURE)
             {
                 m_Result = result;
-                return Result::SUCCESS;
+                return Result::FAILURE;
             }
-            else if (result == Result::FAILURE)
+            else if (result == Result::SUCCESS)
             {
                 ++i;
             }

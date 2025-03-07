@@ -10,7 +10,6 @@ namespace BehaviourTree
         Selector(const std::string& name) : Composite(name) {}
         virtual ~Selector() = default;
 
-        virtual bool Evaluate() override;
         virtual Result Run() override;
     };
 }

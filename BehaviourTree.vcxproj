@@ -134,6 +134,8 @@
     <ClCompile Include="Blackboard\Blackboard.cpp" />
     <ClCompile Include="Composite\Composite.cpp" />
     <ClCompile Include="Decorator\DistanceCondition.cpp" />
+    <ClCompile Include="Composite\Sequence.cpp" />
+    <ClCompile Include="Task\SuccessTask.cpp" />
     <ClCompile Include="Task\FailTask.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Node.cpp" />
@@ -151,6 +153,8 @@
     <ClInclude Include="Blackboard\Blackboard.h" />
     <ClInclude Include="Composite\Composite.h" />
     <ClInclude Include="Decorator\DistanceCondition.h" />
+    <ClInclude Include="Composite\Sequence.h" />
+    <ClInclude Include="Task\SuccessTask.h" />
     <ClInclude Include="Task\FailTask.h" />
     <ClInclude Include="Node.h" />
     <ClInclude Include="Decorator\Decorator.h" />

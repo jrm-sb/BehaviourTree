@@ -35,4 +35,17 @@ namespace BehaviourTree
 	{
 		m_Children.clear();
 	}
+
+	bool Composite::Evaluate()
+	{
+		for (const std::unique_ptr<Decorator>& decorator : m_Decorators)
+		{
+			if (!decorator->Evaluate())
+			{
+				return false;
+			}
+		}
+
+		return true;
+	}
 }

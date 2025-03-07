@@ -27,7 +27,7 @@ namespace BehaviourTree
         const std::vector<std::unique_ptr<Decorator>>& GetDecorators() const { return std::move(m_Decorators); }
         const std::vector<std::unique_ptr<Task>>& GetChildren() const { return std::move(m_Children); }
 
-        virtual bool Evaluate() override { return true; }
+        virtual bool Evaluate() override;
         virtual Result Run() override = 0;
         
     protected:
