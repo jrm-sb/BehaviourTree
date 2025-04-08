@@ -20,6 +20,8 @@ namespace BehaviourTree
             }
         }
 
+        // No child has returned SUCCESS
+        // meaning that result = FAILURE
         m_Result = result;
         return m_Result;
     }

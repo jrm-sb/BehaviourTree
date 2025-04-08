@@ -24,7 +24,7 @@ namespace BehaviourTree
             }
             else if (result == Result::FAILURE)
             {
-                currentIndex = 0;
+                currentIndex = m_Nodes.size();
             }
         }
 	}

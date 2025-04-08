@@ -11,6 +11,7 @@
 #include "Task/WaitTask.h"
 #include "Node.h"
 #include "TestRunner.h"
+#include "Tree.h"
 
 TEST(CreateEmptyNode)
 {
