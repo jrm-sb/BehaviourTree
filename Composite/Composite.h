@@ -20,7 +20,7 @@ namespace BehaviourTree
         void RemoveChild(std::unique_ptr<Task> task);
         void RemoveAllChildren();
 
-        const std::vector<std::unique_ptr<Task>>& GetChildren() const { return std::move(m_Children); }
+        const std::vector<std::unique_ptr<Task>>& GetChildren() const { return m_Children; }
 
         virtual bool Evaluate() override;
         virtual Result Run() override = 0;
