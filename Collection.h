@@ -17,7 +17,7 @@ namespace BehaviourTree
         void RemoveDecorator(std::unique_ptr<Decorator> decorator);
         void RemoveAllDecorators();
 
-        const std::vector<std::unique_ptr<Decorator>>& GetDecorators() const { return std::move(m_Decorators); }
+        const std::vector<std::unique_ptr<Decorator>>& GetDecorators() const { return m_Decorators; }
 
     protected:
         std::vector<std::unique_ptr<Decorator>> m_Decorators;
