@@ -24,6 +24,7 @@ namespace BehaviourTree
 
         virtual bool Evaluate() override;
         virtual Result Run() override = 0;
+        virtual void OnExit() override {};
         
     protected:
         std::vector<std::unique_ptr<Task>> m_Children;

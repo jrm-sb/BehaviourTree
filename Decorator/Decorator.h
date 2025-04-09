@@ -12,5 +12,6 @@ namespace BehaviourTree
 		Decorator(const std::string& name) : Node(name) {}
 		virtual ~Decorator() = default;
 		virtual bool Evaluate() override = 0;
+		virtual void OnExit() override {};
 	};
 }

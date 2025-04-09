@@ -13,31 +13,14 @@
 #include "TestRunner.h"
 #include "Tree.h"
 
-TEST(CreateEmptyNode)
+TEST(CreateSuccessTask)
 {
-    BehaviourTree::Node n{};
+    BehaviourTree::SuccessTask t{};
 
-    EXPECT(n.GetName() == "EmptyNode");
-    EXPECT(n.GetId() == 0);
-    EXPECT(n.GetIndex() == 0);
-    EXPECT(n.GetResult() == BehaviourTree::Result::INVALID);
-}
-
-TEST(CopyNode)
-{
-    BehaviourTree::Node n{ "CopyNode", 1, 1 };
-
-    BehaviourTree::Node n2{ n };
-    EXPECT(n2.GetName() == "CopyNode");
-    EXPECT(n2.GetId() == 1);
-    EXPECT(n2.GetIndex() == 1);
-    EXPECT(n2.GetResult() == BehaviourTree::Result::INVALID);
-
-    BehaviourTree::Node n3 = n;
-    EXPECT(n3.GetName() == "CopyNode");
-    EXPECT(n3.GetId() == 1);
-    EXPECT(n3.GetIndex() == 1);
-    EXPECT(n3.GetResult() == BehaviourTree::Result::INVALID);
+    EXPECT(t.GetName() == "SuccessTask");
+    EXPECT(t.GetId() == 0);
+    EXPECT(t.GetIndex() == 0);
+    EXPECT(t.GetResult() == BehaviourTree::Result::INVALID);
 }
 
 TEST(AddBlackboardEntry)
