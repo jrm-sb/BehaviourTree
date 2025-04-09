@@ -21,22 +21,17 @@ namespace BehaviourTree
 		{
 			if (Contains(key))
 			{
-				auto val = std::get_if<T>(&m_Map[key]);
-				if (val)
+				if (const T* val = std::get_if<T>(&m_Map[key]))
 					return *val;
 			}
 
 			return {};
 		}
 
-		template<typename T>
-		requires std::is_same_v<T, int> || std::is_same_v<T, float> || std::is_same_v<T, bool> || std::is_same_v<T, std::string>
-		void SetValue(Key key, T value)
+		void SetValue(Key key, Value value)
 		{
 			m_Map[key] = value;
 		}
-
-		int GetSize() const { return static_cast<int>(m_Map.size()); }
 
 	private:
 		std::unordered_map<Key, Value> m_Map;

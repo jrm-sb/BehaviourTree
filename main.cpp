@@ -48,7 +48,6 @@ TEST(AddBlackboardEntry)
 
     blackboard.SetValue(0, 1);
     EXPECT(blackboard.Contains(0) == true);
-    EXPECT(blackboard.GetSize() == 1);
 
     EXPECT(blackboard.GetValue<int>(0) == 1);
     EXPECT(blackboard.GetValue<float>(0) == std::nullopt);
