@@ -113,7 +113,7 @@ TEST(SuccessTask)
     EXPECT(successTask.Run() == BehaviourTree::Result::SUCCESS);
 }
 
-TEST(AddDecoratorsToTaskAndEvaluate)
+/*TEST(AddDecoratorsToTaskAndEvaluate)
 {
     BehaviourTree::Blackboard blackboard{};
     static constexpr BehaviourTree::Blackboard::Key key1 = 1;
@@ -160,7 +160,7 @@ TEST(SelectorNodeWithFailTasks)
     EXPECT(selector.Evaluate() == true);
     selector.OnEnter();
     EXPECT(selector.Run() == BehaviourTree::Result::FAILURE);
-}
+}*/
 
 TEST(SelectorNodeWithFailTasksAndSuccessTask)
 {

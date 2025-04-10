@@ -13,7 +13,6 @@ namespace BehaviourTree
         virtual ~WaitTask() = default;
 
         virtual void OnEnter() override;
-        virtual bool Evaluate() override { return __super::Evaluate(); }
         virtual Result Run() override;
 
         bool IsFinished() const;

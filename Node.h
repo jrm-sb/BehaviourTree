@@ -34,7 +34,6 @@ namespace BehaviourTree
 		unsigned int GetIndex() const { return m_Index; }
 		Result GetResult() const { return m_Result; }
 
-		virtual bool Evaluate() { return true; }
 		virtual Result Run() { m_Result = Result::SUCCESS; return m_Result; }
 		virtual void OnEnter() { m_Result = Result::RUNNING; }
 		virtual void OnExit() = 0;

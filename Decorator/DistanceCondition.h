@@ -19,9 +19,10 @@ namespace BehaviourTree
             : Decorator("DistanceCondition"), m_Value(valueToCheck), m_Blackboard(blackboard), m_Key(key), m_Operator(op) {}
         virtual ~DistanceCondition() = default;
 
-        virtual bool Evaluate() override;
-
         void SetOperator(Operator op) { m_Operator = op; }
+
+        virtual bool Evaluate() override;
+        virtual Result Run() override;
 
     private:
         float m_Value;

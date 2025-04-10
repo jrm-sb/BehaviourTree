@@ -13,7 +13,6 @@ namespace BehaviourTree
         Task(const std::string& name) : Collection(name) {}
         virtual ~Task() = default;
 
-        virtual bool Evaluate() override;
         virtual Result Run() override = 0;
 
     protected:

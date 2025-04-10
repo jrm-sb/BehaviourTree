@@ -16,18 +16,17 @@ namespace BehaviourTree
 
         virtual ~Composite() = default;
 
-        void AddChild(std::unique_ptr<Task> task);
-        void RemoveChild(std::unique_ptr<Task> task);
+        void AddChild(std::unique_ptr<Node> child);
+        void RemoveChild(std::unique_ptr<Node> child);
         void RemoveAllChildren();
 
-        const std::vector<std::unique_ptr<Task>>& GetChildren() const { return m_Children; }
+        const std::vector<std::unique_ptr<Node>>& GetChildren() const { return m_Children; }
 
-        virtual bool Evaluate() override;
         virtual Result Run() override = 0;
         virtual void OnExit() override {};
         
     protected:
-        std::vector<std::unique_ptr<Task>> m_Children;
+        std::vector<std::unique_ptr<Node>> m_Children;
     };
 }
 

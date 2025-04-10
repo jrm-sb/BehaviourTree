@@ -11,10 +11,13 @@ namespace BehaviourTree
     Result WaitTask::Run()
     {
         auto now = std::chrono::steady_clock::now();
+
+        // Make sure m_StartTime is initialized
         if (m_StartTime == std::chrono::time_point<std::chrono::steady_clock>())
         {
             m_StartTime = now;
         }
+
         float elapsed = std::chrono::duration<float>(now - m_StartTime).count();
 
         if (elapsed >= m_WaitTime)
