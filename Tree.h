@@ -10,15 +10,18 @@ namespace BehaviourTree
 	{
 	public:
 		Tree() = default;
+		Tree(const Blackboard& blackboard, std::unique_ptr<Node> root)
+			: m_Blackboard(blackboard), m_Root(std::move(root)) {}
 
-		void AddNode(std::unique_ptr<Node> node);
 		void RunTree();
 
-		const std::vector<std::unique_ptr<Node>>& GetNodes() const { return m_Nodes; }
 		const Blackboard& GetBlackboard() const { return m_Blackboard; }
 
+		const std::unique_ptr<Node>& GetRoot() const { return m_Root; }
+		void SetRoot(std::unique_ptr<Node> root) { m_Root = std::move(root); }
+
 	private:
-		std::vector<std::unique_ptr<Node>> m_Nodes;
+		std::unique_ptr<Node> m_Root;
 		Blackboard m_Blackboard;
 	};
 }
