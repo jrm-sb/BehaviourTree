@@ -8,7 +8,7 @@ namespace BehaviourTree
         m_StartTime = std::chrono::steady_clock::now();
     }
 
-    Result WaitTask::Run()
+    Result WaitTask::UpdateResult()
     {
         auto now = std::chrono::steady_clock::now();
 

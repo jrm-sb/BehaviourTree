@@ -10,7 +10,8 @@ namespace BehaviourTree
         Selector(const std::string& name) : Composite(name) {}
         virtual ~Selector() = default;
 
-        virtual Result Run() override;
+        virtual void OnEnter() override;
+        virtual Result UpdateResult() override;
     };
 }
 

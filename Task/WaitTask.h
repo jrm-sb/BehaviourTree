@@ -13,7 +13,7 @@ namespace BehaviourTree
         virtual ~WaitTask() = default;
 
         virtual void OnEnter() override;
-        virtual Result Run() override;
+        virtual Result UpdateResult() override;
 
         bool IsFinished() const;
 

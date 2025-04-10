@@ -34,15 +34,16 @@ namespace BehaviourTree
 		unsigned int GetIndex() const { return m_Index; }
 		Result GetResult() const { return m_Result; }
 
-		virtual Result Run() { m_Result = Result::SUCCESS; return m_Result; }
+		virtual Result UpdateResult() = 0;
+		virtual Result Run();
 		virtual void OnEnter() { m_Result = Result::RUNNING; }
-		virtual void OnExit() = 0;
+		virtual void OnExit() {}
 
 	protected:
 		std::string m_Name;
 		unsigned int m_Id;
 		unsigned int m_Index;
-		Result m_Result;
+		Result m_Result = Result::INVALID;
 	};
 }
 

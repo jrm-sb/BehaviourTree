@@ -9,7 +9,7 @@ namespace BehaviourTree
         FailTask() : Task("FailTask") {}
         virtual ~FailTask() = default;
 
-        virtual Result Run() override { return Result::FAILURE; }
+        virtual Result UpdateResult() override { return Result::FAILURE; }
     };
 }
 

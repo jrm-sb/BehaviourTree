@@ -2,27 +2,31 @@
 
 namespace BehaviourTree
 {
-    Result Selector::Run()
+    void Selector::OnEnter()
     {
-        int i = 0;
-        Result result = m_Result;
-        while (i < m_Children.size())
+        currentChildIndex = m_Children.begin();
+    }
+
+    Result Selector::UpdateResult()
+    {
+        if (m_Children.empty())
+            return Result::SUCCESS;
+
+        if (currentChildIndex == m_Children.end())
+            return Result::FAILURE;
+
+        const Result result = (*currentChildIndex)->Run();
+
+        switch (result)
         {
-            result = m_Children[i]->Run();
-            if (result == Result::SUCCESS)
+            case Result::SUCCESS:
+                return result;
+
+            default:
             {
-                m_Result = result;
-                return Result::SUCCESS;
-            }
-            else if (result == Result::FAILURE)
-            {
-                ++i;
+                ++currentChildIndex;
+                return Result::RUNNING;
             }
         }
-
-        // No child has returned SUCCESS
-        // meaning that result = FAILURE
-        m_Result = result;
-        return m_Result;
     }
 }

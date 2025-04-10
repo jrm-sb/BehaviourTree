@@ -10,7 +10,8 @@ namespace BehaviourTree
         Sequence(const std::string& name) : Composite(name) {}
         virtual ~Sequence() = default;
 
-        virtual Result Run() override;
+        virtual void OnEnter() override;
+        virtual Result UpdateResult() override;
     };
 }
 

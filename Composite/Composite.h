@@ -8,11 +8,11 @@
 
 namespace BehaviourTree
 {
-    class Composite : public Collection
+    class Composite : public Node
     {
     public:
-        Composite() : Collection("CompositeNode") {}
-        Composite(const std::string& name) : Collection(name) {}
+        Composite() : Node("CompositeNode") {}
+        Composite(const std::string& name) : Node(name) {}
 
         virtual ~Composite() = default;
 
@@ -21,12 +21,10 @@ namespace BehaviourTree
         void RemoveAllChildren();
 
         const std::vector<std::unique_ptr<Node>>& GetChildren() const { return m_Children; }
-
-        virtual Result Run() override = 0;
-        virtual void OnExit() override {};
         
     protected:
         std::vector<std::unique_ptr<Node>> m_Children;
+        std::vector<std::unique_ptr<Node>>::iterator currentChildIndex;
     };
 }
 

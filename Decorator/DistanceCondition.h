@@ -22,7 +22,6 @@ namespace BehaviourTree
         void SetOperator(Operator op) { m_Operator = op; }
 
         virtual bool Evaluate() override;
-        virtual Result Run() override;
 
     private:
         float m_Value;

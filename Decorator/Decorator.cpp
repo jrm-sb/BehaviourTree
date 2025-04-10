@@ -2,7 +2,7 @@
 
 namespace BehaviourTree
 {
-	Result Decorator::Run()
+	Result Decorator::UpdateResult()
 	{
 		if (Evaluate())
 		{

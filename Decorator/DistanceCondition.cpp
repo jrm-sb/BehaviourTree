@@ -34,16 +34,4 @@ namespace BehaviourTree
 			return false;
 		}
 	}
-
-	Result BehaviourTree::DistanceCondition::Run()
-	{
-		if (Evaluate())
-		{
-			return Result::SUCCESS;
-		}
-		else
-		{
-			return Result::FAILURE;
-		}
-	}
 }

@@ -13,7 +13,7 @@ namespace BehaviourTree
         Task(const std::string& name) : Collection(name) {}
         virtual ~Task() = default;
 
-        virtual Result Run() override = 0;
+        virtual Result UpdateResult() override = 0;
 
     protected:
         virtual void OnEnter() override {}
