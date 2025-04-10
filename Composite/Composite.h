@@ -2,7 +2,6 @@
 #include <memory>
 #include <vector>
 
-#include "Collection.h"
 #include "Decorator/Decorator.h"
 #include "Task/Task.h"
 

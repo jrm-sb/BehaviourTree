@@ -2,15 +2,14 @@
 #include <memory>
 #include <vector>
 #include "Decorator.h"
-#include "Collection.h"
 
 namespace BehaviourTree
 {
-    class Task : public Collection
+    class Task : public Node
     {
     public:
-        Task() : Collection("TaskNode") {}
-        Task(const std::string& name) : Collection(name) {}
+        Task() : Node("TaskNode") {}
+        Task(const std::string& name) : Node(name) {}
         virtual ~Task() = default;
 
         virtual Result UpdateResult() override = 0;
