@@ -13,6 +13,7 @@ namespace BehaviourTree
         virtual ~Task() = default;
 
         virtual Result UpdateResult() override = 0;
+        virtual void AddChild(std::unique_ptr<Node> child) override {}
 
     protected:
         virtual void OnEnter() override {}

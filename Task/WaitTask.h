@@ -19,7 +19,7 @@ namespace BehaviourTree
 
     private:
         std::chrono::time_point<std::chrono::steady_clock> m_StartTime;
-        float m_WaitTime;  // en secondes
+        float m_WaitTime;  // in seconds
         bool m_IsWaiting = false;
     };
 }

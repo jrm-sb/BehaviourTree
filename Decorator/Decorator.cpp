@@ -6,9 +6,9 @@ namespace BehaviourTree
 	{
 		if (Evaluate())
 		{
-			if (child)
+			if (m_Child)
 			{
-				child->Run();
+				m_Child->Run();
 			}
 			else
 			{

@@ -1,4 +1,5 @@
 #pragma once
+#include <memory>
 #include <string>
 namespace BehaviourTree
 {
@@ -27,7 +28,7 @@ namespace BehaviourTree
 
 		virtual ~Node() = default;
 
-		virtual void AddChild(const Node& node) {}
+		virtual void AddChild(std::unique_ptr<Node> child) = 0;
 
 		std::string GetName() const { return m_Name; }
 		unsigned int GetId() const { return m_Id; }
@@ -37,7 +38,7 @@ namespace BehaviourTree
 		virtual Result UpdateResult() = 0;
 		virtual Result Run();
 		virtual void OnEnter() { m_Result = Result::RUNNING; }
-		virtual void OnExit() {}
+		virtual void OnExit() = 0;
 
 	protected:
 		std::string m_Name;

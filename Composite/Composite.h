@@ -15,9 +15,11 @@ namespace BehaviourTree
 
         virtual ~Composite() = default;
 
-        void AddChild(std::unique_ptr<Node> child);
+        virtual void AddChild(std::unique_ptr<Node> child) override;
         void RemoveChild(std::unique_ptr<Node> child);
         void RemoveAllChildren();
+
+        virtual void OnExit() override {};
 
         const std::vector<std::unique_ptr<Node>>& GetChildren() const { return m_Children; }
         
