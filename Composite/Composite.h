@@ -25,7 +25,7 @@ namespace BehaviourTree
         
     protected:
         std::vector<std::unique_ptr<Node>> m_Children;
-        std::vector<std::unique_ptr<Node>>::iterator currentChildIndex;
+        std::vector<std::unique_ptr<Node>>::iterator currentChildInterator;
     };
 }
 

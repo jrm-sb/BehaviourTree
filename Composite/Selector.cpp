@@ -4,7 +4,7 @@ namespace BehaviourTree
 {
     void Selector::OnEnter()
     {
-        currentChildIndex = m_Children.begin();
+        currentChildInterator = m_Children.begin();
     }
 
     Result Selector::UpdateResult()
@@ -12,10 +12,10 @@ namespace BehaviourTree
         if (m_Children.empty())
             return Result::SUCCESS;
 
-        if (currentChildIndex == m_Children.end())
+        if (currentChildInterator == m_Children.end())
             return Result::FAILURE;
 
-        const Result result = (*currentChildIndex)->Run();
+        const Result result = (*currentChildInterator)->Run();
 
         switch (result)
         {
@@ -24,7 +24,9 @@ namespace BehaviourTree
 
             default:
             {
-                ++currentChildIndex;
+                if (++currentChildInterator == m_Children.end())
+                    return Result::FAILURE;
+
                 return Result::RUNNING;
             }
         }

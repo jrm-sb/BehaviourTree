@@ -4,7 +4,10 @@ namespace BehaviourTree
 {
 	Result Node::Run()
 	{
-		OnEnter();
+		if (m_Result != Result::RUNNING)
+		{
+			OnEnter();
+		}
 
 		m_Result = UpdateResult();
 

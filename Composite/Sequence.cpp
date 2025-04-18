@@ -4,21 +4,23 @@ namespace BehaviourTree
 {
     void Sequence::OnEnter()
     {
-        currentChildIndex = m_Children.begin();
+        currentChildInterator = m_Children.begin();
     }
 
     Result Sequence::UpdateResult()
     {
-        if (m_Children.empty() || currentChildIndex == m_Children.end())
+        if (m_Children.empty() || currentChildInterator == m_Children.end())
             return Result::SUCCESS;
 
-        const Result result = (*currentChildIndex)->Run();
+        const Result result = (*currentChildInterator)->Run();
 
         switch (result)
         {
             case Result::SUCCESS:
             {
-                ++currentChildIndex;
+                if (++currentChildInterator == m_Children.end())
+                    return Result::SUCCESS;
+
                 return Result::RUNNING;
             }
 

@@ -173,6 +173,8 @@ TEST(SelectorNodeWithFailTasksAndSuccessTask)
     EXPECT(selector.GetChildren().size() == 3);
 
     selector.OnEnter();
+    EXPECT(selector.Run() == BehaviourTree::Result::RUNNING);
+    EXPECT(selector.Run() == BehaviourTree::Result::RUNNING);
     EXPECT(selector.Run() == BehaviourTree::Result::SUCCESS);
 }
 
@@ -200,16 +202,19 @@ TEST(SequenceNodeWithSuccessTask)
     EXPECT(sequence.Run() == BehaviourTree::Result::SUCCESS);
 }
 
-TEST(SequenceNodeWithSuccessTaskAndFailTask)
+TEST(SequenceNodeWithSuccessTasksAndFailTask)
 {
     BehaviourTree::Sequence sequence{};
 
     sequence.AddChild(std::make_unique<BehaviourTree::SuccessTask>());
+    sequence.AddChild(std::make_unique<BehaviourTree::SuccessTask>());
     sequence.AddChild(std::make_unique<BehaviourTree::FailTask>());
 
-    EXPECT(sequence.GetChildren().size() == 2);
+    EXPECT(sequence.GetChildren().size() == 3);
 
     sequence.OnEnter();
+    EXPECT(sequence.Run() == BehaviourTree::Result::RUNNING);
+    EXPECT(sequence.Run() == BehaviourTree::Result::RUNNING);
     EXPECT(sequence.Run() == BehaviourTree::Result::FAILURE);
 }
 
