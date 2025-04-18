@@ -8,7 +8,7 @@ namespace BehaviourTree
 		{
 			if (m_Child)
 			{
-				m_Child->Run();
+				return m_Child->Run();
 			}
 			else
 			{

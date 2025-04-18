@@ -113,39 +113,40 @@ TEST(SuccessTask)
     EXPECT(successTask.Run() == BehaviourTree::Result::SUCCESS);
 }
 
-/*TEST(AddDecoratorsToTaskAndEvaluate)
+TEST(AddDecoratorsToTaskAndEvaluate)
 {
     BehaviourTree::Blackboard blackboard{};
     static constexpr BehaviourTree::Blackboard::Key key1 = 1;
     static constexpr BehaviourTree::Blackboard::Key key2 = 2;
     blackboard.SetValue(key1, 10.f);
     blackboard.SetValue(key2, 20.f);
+    BehaviourTree::Selector selector{};
 
     static constexpr float currentDistanceToTarget = 15.0f;
 
-    BehaviourTree::DistanceCondition condition1{ currentDistanceToTarget, blackboard, key1, BehaviourTree::Operator::GREATER_EQUAL };
-    BehaviourTree::DistanceCondition condition2{ currentDistanceToTarget, blackboard, key2, BehaviourTree::Operator::LESS_EQUAL };
+    std::unique_ptr<BehaviourTree::DistanceCondition> condition1 = std::make_unique<BehaviourTree::DistanceCondition>(currentDistanceToTarget, blackboard, key1, BehaviourTree::Operator::GREATER_EQUAL);
+    std::unique_ptr<BehaviourTree::DistanceCondition> condition2 = std::make_unique<BehaviourTree::DistanceCondition>(currentDistanceToTarget, blackboard, key2, BehaviourTree::Operator::LESS_EQUAL);
 
-    static constexpr float timeToWait = 1.0f;
-    BehaviourTree::WaitTask waitTask{ timeToWait };
+    condition2->AddChild(std::make_unique<BehaviourTree::SuccessTask>());
+    condition1->AddChild(std::move(condition2));
 
-    waitTask.AddDecorator(std::make_unique<BehaviourTree::DistanceCondition>(condition1));
-    waitTask.AddDecorator(std::make_unique<BehaviourTree::DistanceCondition>(condition2));
+    selector.AddChild(std::move(condition1));
 
-    EXPECT(waitTask.GetDecorators().size() == 2);
-    EXPECT(waitTask.Evaluate() == true);
+    EXPECT(selector.Run() == BehaviourTree::Result::SUCCESS);
 
     static constexpr float newDistanceToTarget = 150.0f;
 
-    BehaviourTree::DistanceCondition condition3{ newDistanceToTarget, blackboard, key1, BehaviourTree::Operator::GREATER_EQUAL };
-    waitTask.AddDecorator(std::make_unique<BehaviourTree::DistanceCondition>(condition3));
-    EXPECT(waitTask.GetDecorators().size() == 3);
-    EXPECT(waitTask.Evaluate() == true);
+    std::unique_ptr<BehaviourTree::DistanceCondition> condition3 = std::make_unique<BehaviourTree::DistanceCondition>(newDistanceToTarget, blackboard, key1, BehaviourTree::Operator::GREATER_EQUAL);
+    std::unique_ptr<BehaviourTree::DistanceCondition> condition4 = std::make_unique<BehaviourTree::DistanceCondition>(newDistanceToTarget, blackboard, key2, BehaviourTree::Operator::LESS_EQUAL);
 
-    BehaviourTree::DistanceCondition condition4{ newDistanceToTarget, blackboard, key2, BehaviourTree::Operator::LESS_EQUAL };
-    waitTask.AddDecorator(std::make_unique<BehaviourTree::DistanceCondition>(condition4));
-    EXPECT(waitTask.GetDecorators().size() == 4);
-    EXPECT(waitTask.Evaluate() == false);
+    condition4->AddChild(std::make_unique<BehaviourTree::SuccessTask>());
+    condition3->AddChild(std::move(condition4));
+
+    selector.RemoveAllChildren();
+    EXPECT(selector.GetChildren().size() == 0);
+    selector.AddChild(std::move(condition3));
+
+    EXPECT(selector.Run() == BehaviourTree::Result::FAILURE);
 }
 
 TEST(SelectorNodeWithFailTasks)
@@ -157,10 +158,10 @@ TEST(SelectorNodeWithFailTasks)
     selector.AddChild(std::make_unique<BehaviourTree::FailTask>());
 
     EXPECT(selector.GetChildren().size() == 2);
-    EXPECT(selector.Evaluate() == true);
     selector.OnEnter();
+    EXPECT(selector.Run() == BehaviourTree::Result::RUNNING);
     EXPECT(selector.Run() == BehaviourTree::Result::FAILURE);
-}*/
+}
 
 TEST(SelectorNodeWithFailTasksAndSuccessTask)
 {
@@ -178,28 +179,30 @@ TEST(SelectorNodeWithFailTasksAndSuccessTask)
     EXPECT(selector.Run() == BehaviourTree::Result::SUCCESS);
 }
 
-TEST(SequenceNodeWithFailTask)
-{
-    BehaviourTree::Sequence sequence{};
-    EXPECT(sequence.GetName() == "SequenceNode");
-
-    sequence.AddChild(std::make_unique<BehaviourTree::FailTask>());
-    EXPECT(sequence.GetChildren().size() == 1);
-
-    sequence.OnEnter();
-    EXPECT(sequence.Run() == BehaviourTree::Result::FAILURE);
-}
-
 TEST(SequenceNodeWithSuccessTask)
 {
     BehaviourTree::Sequence sequence{};
 
     sequence.AddChild(std::make_unique<BehaviourTree::SuccessTask>());
+    sequence.AddChild(std::make_unique<BehaviourTree::SuccessTask>());
+
+    EXPECT(sequence.GetChildren().size() == 2);
+
+    sequence.OnEnter();
+    EXPECT(sequence.Run() == BehaviourTree::Result::RUNNING);
+    EXPECT(sequence.Run() == BehaviourTree::Result::SUCCESS);
+}
+
+TEST(SequenceNodeWithFailTask)
+{
+    BehaviourTree::Sequence sequence{};
+
+    sequence.AddChild(std::make_unique<BehaviourTree::FailTask>());
 
     EXPECT(sequence.GetChildren().size() == 1);
 
     sequence.OnEnter();
-    EXPECT(sequence.Run() == BehaviourTree::Result::SUCCESS);
+    EXPECT(sequence.Run() == BehaviourTree::Result::FAILURE);
 }
 
 TEST(SequenceNodeWithSuccessTasksAndFailTask)
